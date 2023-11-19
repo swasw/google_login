@@ -1,0 +1,3 @@
+ClientId = 57857913804-vtbf1uedp35ptto2qf4m10v394bm753o.apps.googleusercontent.com
+ClientSecret = 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
+Redirect URL = http://localhost/bootstrap_task/dashboard.php
