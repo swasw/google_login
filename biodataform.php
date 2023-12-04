@@ -47,7 +47,7 @@
                         <input type="tel" class="form-control" id="phoneNumber" placeholder="Your Phone Number">
                     </div>
 
-                    <button type="submit" class="btn" style="background-color: #aeded5; color: #456443;">Save Changes</button>
+                    <button type="submit" class="btn w-100 mt-3" style="background-color: #aeded5; color: #456443;">Save Changes</button>
                 </form>
             </div>
         </div>
