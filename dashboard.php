@@ -1,3 +1,31 @@
+<?php
+global $conn;
+session_start();
+require_once 'dbutil.php';
+
+if (!isset($_COOKIE['nim'])) header('Location: login.php');
+
+$sql = 'select * from user where nim=?';
+$stmt = $conn->prepare($sql);
+$stmt->bind_param('s', $_COOKIE['nim']);
+$stmt->execute();
+$user=$stmt->get_result()->fetch_assoc();
+
+$sql = 'select distinct term from course where user=? and finished=true';
+$stmt = $conn->prepare($sql);
+$stmt->bind_param('s', $_COOKIE['nim']);
+$stmt->execute();
+$khsTerm=$stmt->get_result()->fetch_assoc();
+
+$sql = 'select distinct term from course where user=?';
+$stmt = $conn->prepare($sql);
+$stmt->bind_param('s', $_COOKIE['nim']);
+$stmt->execute();
+$krsTerm=$stmt->get_result()->fetch_assoc();
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +33,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaisan's Academic Page</title>
-    <!-- Bootstrap CSS -->
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="dashboard.css">
@@ -29,12 +56,12 @@
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <!-- Grades Tab -->
                     <div class="tab-pane fade show active" id="grades">
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <h2 class="mb-0">Kartu Hasil Studi</h2>
-                            <select id="khsTerm" class="form-select" aria-label="Default select example" onchange="onKhsTermChange()">
+                            <select id="khsTerm" class="form-select" aria-label="Default select example" onchange="khsTermChange()">
                                 <option selected>Pilih semester</option>
+                                <option value="1">Semester 1</option>
                             </select>
                         </div>
                         <div class="card khs-card">
@@ -93,48 +120,6 @@
                     </div>
                 </div>
             </section>
-            <!-- <section class="col-md-9">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h2 class="mb-0">Kartu Hasil Studi</h2>
-                    <div class="dropdown">
-                        <button id="termDropdown" class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Pilih Semester
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="termDropdown">
-                            <li><a class="dropdown-item" href="#">Semester 1</a></li>
-                            <li><a class="dropdown-item" href="#">Semester 2</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-body">
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">No</th>
-                                    <th scope="col">Kode Kelas</th>
-                                    <th scope="col">Kode MK</th>
-                                    <th scope="col">Mata Kuliah</th>
-                                    <th scope="col">SKS</th>
-                                    <th scope="col">Nilai</th>
-                                    <th scope="col">Bobot</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>1313746185</td>
-                                    <td>4615461647</td>
-                                    <td>Matematika Diskrit</td>
-                                    <td>3</td>
-                                    <td>A</td>
-                                    <td>6.8</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section> -->
 
             <aside class="col-md-3">
                 <h2 class="mb-4">Biodata</h2>
@@ -142,44 +127,46 @@
                     <div class="card-body">
                         <div class="mb-2">
                             <label class=" text-uppercase text-muted small">NAMA</label>
-                            <div class="fw-bold">Kaisan Tsabit</div>
-                        </div>
-
-                        <div class="mb-2">
-                            <label class=" text-uppercase text-muted small">NIM</label>
-                            <div class="fw-bold">1313622020</div>
-                        </div>
-
-                        <div class="mb-2">
-                            <label class=" text-uppercase text-muted small">tanggal lahir</label>
-                            <div class="fw-bold">03-10-2003</div>
-                        </div>
-
-                        <div class="mb-2">
-                            <label class=" text-uppercase text-muted small">tempat lahir</label>
-                            <div class="fw-bold">Bekasi</div>
+                            <div class="fw-bold"><?php echo $user['name'] ?></div>
                         </div>
 
                         <div class="mb-2">
                             <label class=" text-uppercase text-muted small">Email</label>
-                            <div class="fw-bold">ktsabit@gmail.com</div>
+                            <div class="fw-bold"><?php echo $user['email'] ?></div>
                         </div>
 
                         <div class="mb-2">
+                            <label class=" text-uppercase text-muted small">NIM</label>
+                            <div class="fw-bold"><?php echo $user['nim'] ?></div>
+                        </div>
+
+                        <div class="mb-2">
+                            <label class=" text-uppercase text-muted small">tanggal lahir</label>
+                            <div class="fw-bold"><?php echo $user['dob'] ?? '-' ?></div>
+                        </div>
+
+                        <div class="mb-2">
+                            <label class=" text-uppercase text-muted small">tempat lahir</label>
+                            <div class="fw-bold"><?php echo $user['pob'] ?? '-' ?></div>
+                        </div>
+
+
+
+                        <div class="mb-2">
                             <label class=" text-uppercase text-muted small">no. hp</label>
-                            <div class="fw-bold">085155488272</div>
+                            <div class="fw-bold"><?php echo $user['phone'] ?? '-' ?></div>
                         </div>
                         <div class="mb-2">
                             <label class=" text-uppercase text-muted small">fakultas</label>
-                            <div class="fw-bold">Fakultas Ekonomi dan Bisnis</div>
+                            <div class="fw-bold"><?php echo $user['faculty'] ?? '-' ?></div>
                         </div>
                         <div class="mb-2">
                             <label class=" text-uppercase text-muted small">jurusan</label>
-                            <div class="fw-bold">Ilmu Komputer</div>
+                            <div class="fw-bold"><?php echo $user['major'] ?? '-' ?></div>
                         </div>
                         <div class="mb-2 mt-4">
                             <button class="btn" style="background-color: #aeded5; color: #456443;" onclick="location.href='biodataform.php'">Edit Biodata</button>
-                            <button class="btn" style="background-color: #ff8981; color: #860403;" onclick="getTerm()">Logout</button>
+                            <button class="btn" style="background-color: #ff8981; color: #860403;" onclick="location.href='logout.php'">Logout</button>
                             <!-- <button class="btn" style="background-color: #ff8981; color: #860403;" onclick="location.href='login.php'">Logout</button> -->
                         </div>
                     </div>
