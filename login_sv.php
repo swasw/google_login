@@ -15,15 +15,15 @@ if(!empty($_POST['username']) && !empty($_POST['password'])) {
             setcookie('nim', $row['nim'], time() + (86400 * 30));
             header('Location: dashboard.php');
         } else {
-            $_SESSION['error'] = 'Invalid password.';
+            $_SESSION['login-error'] = 'Invalid password.';
             header('Location: login.php');
         }
     } else {
-        $_SESSION['error'] = "Username doesn't exist.";
+        $_SESSION['login-error'] = "Username doesn't exist.";
         header('Location: login.php');
     }
 }
 else {
-    $_SESSION['error'] = "Please fill in both the fields.";
+    $_SESSION['login-error'] = "Please fill in both the fields.";
     header('Location: login.php');
 }

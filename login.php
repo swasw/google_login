@@ -51,18 +51,18 @@ if (isset($_GET['code'])) {
             <form action="./login_sv.php" method="post">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" name="username" class="form-control" id="username" placeholder="Your Username">
+                    <input type="text" name="username" class="form-control" id="username" placeholder="Your Username" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" id="password" placeholder="Your Password">
+                    <input type="password" name="password" class="form-control" id="password" placeholder="Your Password" required>
                 </div>
 
                 <?php
-                if (isset($_SESSION['error']))
-                    echo '<div class="alert alert-danger text-center mt-2" role="alert">'.$_SESSION['error'].'</div>';
-                unset($_SESSION['error']);
+                if (isset($_SESSION['login-error']))
+                    echo '<div class="alert alert-danger text-center mt-2" role="alert">'.$_SESSION['login-error'].'</div>';
+                unset($_SESSION['login-error']);
 
                 ?>
 

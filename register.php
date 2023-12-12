@@ -26,26 +26,26 @@ session_start();
 
                 <div class="mb-3">
                     <label for="name" class="form-label">Full Name</label>
-                    <input type="text" name="name" class="form-control" id="name" placeholder="Your Name">
+                    <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="nim" class="form-label">NIM</label>
-                    <input type="text" name="nim" class="form-control" id="nim" placeholder="Your NIM">
+                    <input type="text" name="nim" class="form-control" id="nim" placeholder="Your NIM" required>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="text" name="email" class="form-control" id="email" placeholder="Your Email">
+                    <input type="text" name="email" class="form-control" id="email" placeholder="Your Email" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" name="username" class="form-control" id="username" placeholder="Your Username">
+                    <input type="text" name="username" class="form-control" id="username" placeholder="Your Username" required >
                 </div>
 
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" id="password" placeholder="Your Password">
+                    <input type="password" name="password" class="form-control" id="password" placeholder="Your Password" required>
                 </div>
 
                 <?php
