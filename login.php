@@ -1,31 +1,9 @@
 <?php
+global $client;
 session_start();
-require_once 'vendor/autoload.php';
-
-$clientID = '57857913804-vtbf1uedp35ptto2qf4m10v394bm753o.apps.googleusercontent.com';
-$clientSecret = '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';
-$redirectUri = 'http://localhost/google_login/dashboard.php';
-
-$client = new Google_Client();
-$client->setClientId($clientID);
-$client->setClientSecret($clientSecret);
-$client->setRedirectUri($redirectUri);
-$client->addScope("email");
-$client->addScope("profile");
-
-if (isset($_GET['code'])) {
-    echo "masuk";
-    $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
-    $client->setAccessToken($token['access_token']);
-
-    $google_oauth = new Google\Service\Oauth2($client);
+require_once 'google.php';
 
 
-    $google_account_info = $google_oauth->userinfo->get();
-    $email =  $google_account_info->email;
-    $name =  $google_account_info->name;
-
-}
 ?>
 
 <!DOCTYPE html>

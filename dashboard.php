@@ -1,9 +1,21 @@
 <?php
-global $conn;
+global $conn, $client;
 session_start();
 require_once 'dbutil.php';
+require_once 'google.php';
 
-if (!isset($_COOKIE['nim'])) header('Location: login.php');
+if (isset($_GET['code'])) {
+    $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
+    $client->setAccessToken($token['access_token']);
+
+    $google_oauth = new Google\Service\Oauth2($client);
+
+    $google_account_info = $google_oauth->userinfo->get();
+
+    $email =  $google_account_info->email;
+}
+
+if (!isset($_COOKIE['nim']) && !isset($_GET['code'])) header('Location: login.php');
 
 $sql = 'select * from user where nim=?';
 $stmt = $conn->prepare($sql);
@@ -22,6 +34,11 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param('s', $_COOKIE['nim']);
 $stmt->execute();
 $krsTerm=$stmt->get_result()->fetch_all();
+
+if ($user == null) {
+    $user["name"] = $google_account_info->name;
+    $user["email"] = $google_account_info->email;
+}
 
 
 ?>
@@ -115,7 +132,7 @@ $krsTerm=$stmt->get_result()->fetch_all();
 
                         <div class="mb-2">
                             <label class=" text-uppercase text-muted small">NIM</label>
-                            <div class="fw-bold"><?php echo $user['nim'] ?></div>
+                            <div class="fw-bold"><?php echo $user['nim'] ?? '-' ?></div>
                         </div>
 
                         <div class="mb-2">
