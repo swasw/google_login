@@ -90,15 +90,17 @@ if ($user == null) {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>1313746185</td>
-                                            <td>4615461647</td>
-                                            <td>Matematika Diskrit</td>
-                                            <td>3</td>
-                                            <td>A</td>
-                                            <td>6.8</td>
-                                        </tr>
+                                        <?php foreach ($krsTerm as $key=>$item) { ?>
+                                            <tr>
+                                                <td><?= $key + 1 ?></td>
+                                                <td><?= $item[0] ?></td>
+                                                <td><?= $item[7] ?></td>
+                                                <td><?= $item[1] ?></td>
+                                                <td><?= $item[2] ?></td>
+                                                <td><?= $item[4] ?></td>
+                                                <td><?= $item[5] ?></td>
+                                            </tr>
+                                        <?php } ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -109,7 +111,28 @@ if ($user == null) {
                             <h2 class="mb-3">Kartu Rencana Studi</h2>
                         <div class="card krs-card">
                             <div class="card-body p-0">
-
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">No</th>
+                                        <th scope="col">Kode Kelas</th>
+                                        <th scope="col">Kode MK</th>
+                                        <th scope="col">Mata Kuliah</th>
+                                        <th scope="col">SKS</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($khsTerm as $key=>$item) { ?>
+                                            <tr>
+                                                <td><?= $key + 1 ?></td>
+                                                <td><?= $item[0] ?></td>
+                                                <td><?= $item[7] ?></td>
+                                                <td><?= $item[1] ?></td>
+                                                <td><?= $item[2] ?></td>
+                                            </tr>
+                                        <?php } ?>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

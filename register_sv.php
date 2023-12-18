@@ -31,6 +31,7 @@ else {
 
 
     if($stmt->execute()) {
+        genCourses($_POST['nim']);
         $_SESSION['success'] = 'Account created.';
         header('Location: login.php');
     }
@@ -40,4 +41,37 @@ else {
     }
 }
 
+function genCourses($nim): void
+{
+    for ($i = 0; $i < 10; $i++) {
+        $_SESSION['msg'] = $nim;
+        global $conn;
+        $stmt = $conn->prepare('insert into course (subjectId, subjectName, credits, finished, grade, weight, user, courseId, term) values (?,?,?,?,?,?,?,?,?)');
+        $subjectId = rand(1000000000,2000000000);
+        $subjects=array("Kalkulus Differensial","Dasar-dasar Pemrograman","Matematika Diskrit","Statistika dan Probabilitas","Pengantar TIK","Aljabar Linier",'Kalkulus Integral','Pengantar Sistem Digital','Pengantar Teori Graph','Struktur Data dan Algoritma','Basis Data','Interaksi Manusia','Perancangan dan Pemrograman Web','Desain dan Pemrograman Berorientasi Objek','Metode Numerik','Data Raya dan Pemrograman');
+        $k=array_rand($subjects);
+        $subjectName = $subjects[$k];
+        $credits = rand(2,3);
+        $finished = rand(0,1);
+        $grades=array('A','B','C');
+        $l=array_rand($grades);
+        $grade = $grades[$l];
+        $weight = rand(0, 200) / 10;
+        $courseId = '13136' . rand(10000,99999);
+        $term = rand(1,3);
+        $stmt->bind_param(
+            'sssssssss',
+            $subjectId,
+            $subjectName,
+            $credits,
+            $finished,
+            $grade,
+            $weight,
+            $nim,
+            $courseId,
+            $term
+        );
+        $stmt->execute();
+    }
+}
 
